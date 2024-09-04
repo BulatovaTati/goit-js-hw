@@ -1,0 +1,60 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+
+  font-family: 'Montserrat', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: #fafafa;
+  color: #212121;
+  margin: 16px;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item h2 {
+  margin: 0;
+  margin-bottom: 16px;
+
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.33;
+
+  color: #2e2f42;
+}
+
+.item {
+  margin-bottom: 24px;
+  color: #2e2f42;
+  background-color: #f6f6fe;
+  border-radius: 8px;
+  padding: 16px;
+  max-width: 392px;
+}
+
+.option-item {
+  border: 1px solid #808080;
+  border-radius: 4px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  padding-left: 16px;
+}
+
+.option-item:not(:last-child) {
+  margin-bottom: 8px;
+}
