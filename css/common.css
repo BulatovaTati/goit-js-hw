@@ -119,3 +119,40 @@ h1 {
   max-height: 136px;
   background-color: #fff;
 }
+
+.login-form {
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 408px;
+  max-height: 256px;
+  background-color: #fff;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.login-form input {
+  margin-top: 8px;
+  display: block;
+  width: 100%;
+  border: 1px solid #808080;
+  border-radius: 4px;
+  height: 40px;
+  padding-left: 16px;
+}
+
+.login-form-btn {
+  font-family: inherit;
+  font-weight: 500;
+  margin-top: 8px;
+  padding: 8px 16px;
+  max-width: 86px;
+  height: 40px;
+  background-color: #4e75ff;
+  color: #fff;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
