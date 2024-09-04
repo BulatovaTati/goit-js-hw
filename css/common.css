@@ -16,8 +16,25 @@ body {
   margin: 16px;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+}
+
 a {
   text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 ul,
@@ -27,14 +44,19 @@ ol {
   padding: 0;
 }
 
+#categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-evenly;
+}
+
 .item h2 {
   margin: 0;
   margin-bottom: 16px;
-
   font-weight: 600;
   font-size: 24px;
   line-height: 1.33;
-
   color: #2e2f42;
 }
 
@@ -44,7 +66,7 @@ ol {
   background-color: #f6f6fe;
   border-radius: 8px;
   padding: 16px;
-  max-width: 392px;
+  width: 392px;
 }
 
 .option-item {
@@ -57,4 +79,18 @@ ol {
 
 .option-item:not(:last-child) {
   margin-bottom: 8px;
+}
+
+.gallery {
+  max-width: 1128px;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px 24px;
+}
+
+.gallery-item {
+  display: flex;
+  width: calc((100% - 48px) / 3);
 }
