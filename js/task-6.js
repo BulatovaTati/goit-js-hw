@@ -5,25 +5,26 @@ const createBtnBoxes = document.querySelector('[data-create]');
 const deleteBtnBoxes = document.querySelector('[data-destroy]');
 
 createBtnBoxes.addEventListener('click', () => {
-  const value = input.value;
-  const add = createBoxes(value);
+  const value = Number(input.value);
 
-  if (Number(value) >= input.min && Number(value) <= input.max) {
-    boxes.prepend(...add);
-    boxes.classList.add('boxes');
-  } else if (value === '' || value === '0') {
-    alert('Sorry, minimum number is 1');
-    boxes.classList.remove('boxes');
+  if (value >= input.min && value <= input.max) {
+    destroyBoxes();
+    createBoxes(value);
   } else {
-    alert('Sorry, maximum number is 100');
-    boxes.classList.remove('boxes');
+    alert(
+      value < input.min
+        ? 'Sorry, minimum number is 1'
+        : 'Sorry, maximum number is 100'
+    );
   }
+
+  input.value = '';
 });
 
 deleteBtnBoxes.addEventListener('click', destroyBoxes);
 
 function createBoxes(amount) {
-  const collection = [];
+  const collection = document.createDocumentFragment();
 
   for (let i = 0; i < amount; i += 1) {
     const size = 30 + i * 10;
@@ -34,19 +35,15 @@ function createBoxes(amount) {
     newBox.style.height = size + 'px';
     newBox.style.width = size + 'px';
 
-    // newBox.style.cssText = ` background-color: ${getRandomHexColor()};
-    // height: ${baseSize + 'px'}; width: ${baseSize + 'px'};`;
-
-    collection.push(newBox);
+    collection.appendChild(newBox);
   }
 
-  return collection;
+  boxes.prepend(collection);
 }
 
 function destroyBoxes() {
   boxes.innerHTML = '';
   input.value = '';
-  boxes.classList.remove('boxes');
 }
 
 function getRandomHexColor() {

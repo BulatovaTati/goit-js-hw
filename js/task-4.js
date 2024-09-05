@@ -13,6 +13,11 @@ function checkValid(event) {
     return alert('All form fields must be filled in');
   }
 
-  console.log(`email: ${email.value}, password: ${password.value}`);
+  const userInfo = {
+    email: email.value,
+    password: password.value,
+  };
+
+  console.log(userInfo);
   event.currentTarget.reset();
 }
