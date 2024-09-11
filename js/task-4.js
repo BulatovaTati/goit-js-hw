@@ -14,8 +14,8 @@ function checkValid(event) {
   }
 
   const userInfo = {
-    email: email.value,
-    password: password.value,
+    email: email.value.trim(),
+    password: password.value.trim(),
   };
 
   console.log(userInfo);
