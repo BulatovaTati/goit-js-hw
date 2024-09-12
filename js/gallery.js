@@ -66,7 +66,6 @@ const images = [
 
 const galleryList = document.querySelector('ul.gallery');
 galleryList.addEventListener('click', getPhoto);
-images.forEach(markup);
 
 const instance = basicLightbox.create(
   ` <div class="modal">
@@ -75,18 +74,18 @@ const instance = basicLightbox.create(
    `,
   {
     onShow: () => {
-      window.addEventListener('keydown', onEscClick);
+      document.addEventListener('keydown', onEscClick);
     },
     onClose: () => {
-      window.removeEventListener('keydown', onEscClick);
+      document.removeEventListener('keydown', onEscClick);
     },
   }
 );
 
-function markup({ preview, original, description }) {
-  return galleryList.insertAdjacentHTML(
-    'beforeend',
-    `<li class="gallery-item">
+const markup = images
+  .map(
+    ({ preview, original, description }) =>
+      `<li class="gallery-item">
             <a class="gallery-link" href=${original}>
                 <img class="gallery-image"
                 src=${preview}
@@ -94,8 +93,10 @@ function markup({ preview, original, description }) {
                 alt='${description}' />
             </a>
         </li>  `
-  );
-}
+  )
+  .join('');
+
+galleryList.insertAdjacentHTML('beforeend', markup);
 
 function getPhoto(e) {
   const {
