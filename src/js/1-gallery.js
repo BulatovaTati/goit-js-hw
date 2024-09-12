@@ -1,3 +1,6 @@
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+
 const images = [
   {
     preview:
@@ -65,22 +68,6 @@ const images = [
 ];
 
 const galleryList = document.querySelector('ul.gallery');
-galleryList.addEventListener('click', getPhoto);
-
-const instance = basicLightbox.create(
-  ` <div class="modal">
-  <img class="modal-image" src="" alt="" />
-    </div>
-   `,
-  {
-    onShow: () => {
-      document.addEventListener('keydown', onEscClick);
-    },
-    onClose: () => {
-      document.removeEventListener('keydown', onEscClick);
-    },
-  }
-);
 
 const markup = images
   .map(
@@ -89,7 +76,6 @@ const markup = images
             <a class="gallery-link" href=${original}>
                 <img class="gallery-image"
                 src=${preview}
-                data-source=${original}
                 alt='${description}' />
             </a>
         </li>  `
@@ -98,27 +84,7 @@ const markup = images
 
 galleryList.insertAdjacentHTML('beforeend', markup);
 
-function getPhoto(e) {
-  const {
-    dataset: { source },
-    alt,
-    nodeName,
-  } = e.target;
-
-  e.preventDefault();
-
-  if (nodeName !== 'IMG') {
-    return;
-  }
-
-  const modalImage = instance.element().querySelector('img');
-  modalImage.src = source;
-  modalImage.alt = alt;
-  instance.show();
-}
-
-function onEscClick({ key }) {
-  if (key === 'Escape') {
-    instance.close();
-  }
-}
+new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
