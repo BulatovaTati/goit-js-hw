@@ -1,7 +1,7 @@
 import flatpickr from 'flatpickr';
 import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
 import 'flatpickr/dist/flatpickr.min.css';
+import 'izitoast/dist/css/iziToast.min.css';
 
 const refs = {
   timer: document.querySelector('.timer'),
@@ -14,12 +14,6 @@ const refs = {
 };
 
 let userSelectedDate = null;
-iziToast.info({
-  timeout: 2000,
-  position: 'topRight',
-  title: 'Hello',
-  message: 'Pick up the date',
-});
 
 const options = {
   enableTime: true,
@@ -27,7 +21,7 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    userSelectedDate = selectedDates[0].getTime();
+    userSelectedDate = selectedDates[0];
 
     if (userSelectedDate < Date.now()) {
       iziToast.error({
@@ -64,6 +58,8 @@ const timer = {
       const delta = userSelectedDate - currentDate;
 
       if (delta <= 0) {
+        clearInterval(this.timerId);
+        updateClockFace(convertMs(0));
         refs.input.disabled = false;
         return;
       }
@@ -81,17 +77,17 @@ const timer = {
 };
 
 refs.button.addEventListener('click', () => {
+  if (timer.timerId) {
+    clearInterval(timer.timerId);
+  }
+
   timer.start();
   refs.button.disabled = true;
   refs.input.disabled = true;
 });
 
 const addLeadingZero = value => {
-  if (value < 10) {
-    return String(value).padStart(2, '0');
-  }
-
-  return value;
+  return String(value).padStart(2, '0');
 };
 
 function updateClockFace(time) {
