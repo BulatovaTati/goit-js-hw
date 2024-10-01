@@ -10,20 +10,30 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <title>HW</title>
-
+    <title>Пошук зображень</title>
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
     <header class="header">
       <div class="container">
-        <nav>
-          <ul class="nav-list">
-            <li><a href="./1-timer.html">Go to timer</a></li>
-            <li><a href="./2-snackbar.html">Go to snackbar</a></li>
-          </ul>
-        </nav>
+        <form class="search-form" id="search-form">
+          <input
+            type="text"
+            name="searchQuery"
+            autocomplete="off"
+            placeholder="Search images..."
+          />
+          <button class="btn" type="submit">Search</button>
+        </form>
       </div>
     </header>
+    <main>
+      <div class="container">
+        <ul class="gallery"></ul>
+      </div>
+    </main>
+
+    <div id="loader" class="loader hidden"></div>
+    <script type="module" src="./main.js"></script>
   </body>
 </html>
