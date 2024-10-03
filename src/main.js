@@ -7,6 +7,11 @@ import 'izitoast/dist/css/iziToast.min.css';
 
 const loader = document.querySelector('.loader');
 const form = document.querySelector('#search-form');
+let instanse = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 form.addEventListener('submit', onSubmitForm);
 
 function onSubmitForm(evt) {
@@ -28,7 +33,7 @@ function onSubmitForm(evt) {
   fetchImages(query)
     .then(resp => {
       domMarkup(resp);
-      refreshSimplelightbox();
+      instanse.refresh('show.simplelightbox');
     })
     .catch(error => {
       console.error('Error fetching images:', error);
@@ -43,14 +48,6 @@ function onSubmitForm(evt) {
       hideLoader();
       form.reset();
     });
-}
-
-function refreshSimplelightbox() {
-  let instanse = new SimpleLightbox('.gallery a', {
-    captionsData: 'alt',
-    captionDelay: 250,
-  });
-  instanse.refresh('show.simplelightbox', function () {});
 }
 
 function showLoader() {
