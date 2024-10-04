@@ -2,6 +2,7 @@ import {
   resetDomMarkup,
   domMarkup,
   markupGallery,
+  innerDomMarkup,
 } from './js/render-functions';
 import Gallery from './js/pixabay-api';
 import SimpleLightbox from 'simplelightbox';
@@ -17,13 +18,14 @@ const refs = {
   buttonToTop: document.querySelector('.scroll-to-top'),
 };
 
-let instanse = new SimpleLightbox('.gallery a', {
+const instanse = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
 
 refs.form.addEventListener('submit', onSubmitForm);
 refs.readmore.addEventListener('click', onLoadMore);
+refs.buttonToTop.addEventListener('click', scrollToTop);
 
 const NewGallery = new Gallery();
 
@@ -34,38 +36,17 @@ async function onSubmitForm(evt) {
   NewGallery.query = query;
 
   if (NewGallery.query === '') {
-    return iziToast.info({
-      position: 'topRight',
-      title: 'Sorry',
-      message: 'Please, type what you want  to search!',
-    });
+    return showToast('info', 'Sorry', 'Please, type what you want  to search!');
   }
-  const newUrl = new URL(window.location);
-  newUrl.searchParams.set('searchQuery', query);
-  window.history.pushState({}, '', newUrl);
 
+  updateUrlSearchParams(query);
   NewGallery.resetPage();
   resetDomMarkup();
   showLoader();
 
   try {
     const { hits, totalHits } = await NewGallery.fetchPictures();
-
-    if (hits.length === 0) {
-      refs.readmore.classList.add('hidden');
-      return showError();
-    }
-
-    const markup = markupGallery(hits);
-    refs.gallery.innerHTML = markup;
-    instanseRefresh();
-
-    if (totalHits <= NewGallery.per_page) {
-      refs.readmore.classList.add('hidden');
-      onEndOfSearchRequest();
-    } else {
-      refs.readmore.classList.remove('hidden');
-    }
+    handleFetchResponse(hits, totalHits);
   } catch (error) {
     showError(error);
   } finally {
@@ -94,6 +75,24 @@ async function onLoadMore() {
   }
 }
 
+function handleFetchResponse(hits, totalHits) {
+  if (hits.length === 0) {
+    refs.readmore.classList.add('hidden');
+    return showToast('error', 'No Results', 'No images found for your search!');
+  }
+
+  const markup = markupGallery(hits);
+  innerDomMarkup(markup);
+  instanseRefresh();
+
+  if (totalHits <= NewGallery.per_page) {
+    refs.readmore.classList.add('hidden');
+    onEndOfSearchRequest();
+  } else {
+    refs.readmore.classList.remove('hidden');
+  }
+}
+
 function showLoader() {
   refs.loader.classList.remove('hidden');
 }
@@ -117,9 +116,9 @@ function smoothScrolling() {
   });
 }
 
-refs.buttonToTop.addEventListener('click', () => {
+function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+}
 
 window.onscroll = () => changeScrollButtonVisibility();
 
@@ -134,21 +133,34 @@ function changeScrollButtonVisibility() {
   }
 }
 
+function updateUrlSearchParams(query) {
+  const newUrl = new URL(window.location);
+  newUrl.searchParams.set('searchQuery', query);
+  window.history.pushState({}, '', newUrl);
+}
+
+function showToast(type, title, message) {
+  iziToast[type]({
+    position: 'topRight',
+    title: title,
+    message: message,
+  });
+}
+
 function showError(error) {
   console.log('Error fetching images:', error.message);
-  iziToast.error({
-    position: 'topRight',
-    title: 'Error',
-    message:
-      'Something went wrong while fetching images. Please try again later!',
-  });
+  showToast(
+    'error',
+    'Error',
+    'Something went wrong while fetching images. Please try again later!'
+  );
 }
 
 function onEndOfSearchRequest() {
   refs.readmore.classList.add('hidden');
-  iziToast.info({
-    position: 'topRight',
-    title: 'End of Search',
-    message: 'You have reached the end of the results!',
-  });
+  showToast(
+    'info',
+    'End of Search',
+    'You have reached the end of the results!'
+  );
 }
